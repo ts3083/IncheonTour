@@ -1,5 +1,6 @@
 package IncheonTour.IncheonTour.api;
 
+import IncheonTour.IncheonTour.StringAnalysis.WiseNLUExample;
 import IncheonTour.IncheonTour.dto.FestivalDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,11 @@ public class ApiController {
         FestivalDto festivalDto = FestivalDto.createFestivalDto("2020101");
         // 받아온 데이터를 전달
         return getFestivalInfo(festivalDto);
+    }
+
+    @GetMapping("/anal")
+    public String StrAnal() {
+        return WiseNLUExample.Analysis();
     }
 
     public String getFestivalInfo(FestivalDto festivalDto) {
