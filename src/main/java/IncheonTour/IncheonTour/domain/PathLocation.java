@@ -5,22 +5,22 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Setter @Getter
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Eagiggu {
+public class PathLocation {
 
-    @Id @GeneratedValue
-    @Column(name = "eagiggu_id")
+    @Id
+    @GeneratedValue
+    @Column(name = "path_location_id")
     private Long id;
-
-    private String state;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "path_id")
     private Path path;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
-    private Location current_location;
+    private Location location;
 }
