@@ -1,11 +1,11 @@
 package IncheonTour.IncheonTour.api;
 
+import IncheonTour.IncheonTour.Service.EagigguService;
 import IncheonTour.IncheonTour.StringAnalysis.WiseNLUExample;
+import IncheonTour.IncheonTour.domain.Eagiggu;
 import IncheonTour.IncheonTour.dto.FestivalDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,8 +13,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class ApiController {
+
+    private final EagigguService eagigguService;
+
+    @PostMapping("/path/{path_id}")
+    public String PathSelect(@PathVariable("path_id") Long pathId) { // 특정 path 선택
+        // 선택한 path로 이지꾸에 path_id 저장
+        eagigguService.updateEagigguPath(Integer.toUnsignedLong(1), pathId);
+        return "ok";
+    }
 
     @GetMapping("/basic")
     public String Basic(@RequestParam(name = "str", defaultValue = "null") String str) {

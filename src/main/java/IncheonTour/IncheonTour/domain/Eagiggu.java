@@ -20,7 +20,7 @@ public class Eagiggu {
     @JoinColumn(name = "path_id")
     private Path path;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location current_location;
 }
