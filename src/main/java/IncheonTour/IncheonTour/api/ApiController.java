@@ -19,6 +19,7 @@ public class ApiController {
 
     private final EagigguService eagigguService;
 
+    /**사용자가 path를 선택*/
     @PostMapping("/path/{path_id}")
     public String PathSelect(@PathVariable("path_id") Long pathId) { // 특정 path 선택
         // 선택한 path로 이지꾸에 path_id 저장
@@ -26,6 +27,7 @@ public class ApiController {
         return "ok";
     }
 
+    /**행사 정보 조회 - 현 위치가 location이고 행사를 요청했다면, 주변 행사 정보 전송*/
     @GetMapping("/basic")
     public String Basic(@RequestParam(name = "str", defaultValue = "null") String str) {
 
@@ -37,10 +39,15 @@ public class ApiController {
         return getFestivalInfo(festivalDto);
     }
 
-    @GetMapping("/anal")
+    /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
+
+
+    /**실시간 위치 정보 10마다 요청, 갱신*/
+
+    /*@GetMapping("/anal")
     public String StrAnal() {
         return WiseNLUExample.Analysis();
-    }
+    }*/
 
     public String getFestivalInfo(FestivalDto festivalDto) {
         StringBuffer sb = new StringBuffer();

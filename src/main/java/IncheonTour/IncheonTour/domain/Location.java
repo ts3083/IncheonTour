@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Location {
 
     @Id

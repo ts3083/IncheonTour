@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Path {
 
     @Id

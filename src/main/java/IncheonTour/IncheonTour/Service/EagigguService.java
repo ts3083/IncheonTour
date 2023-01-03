@@ -20,6 +20,7 @@ public class EagigguService {
         return eagigguRepository.findById(id).get();
     }
 
+    @Transactional
     public void updateEagigguPath(Long eagigguId, Long pathId) {
         Eagiggu eagiggu = eagigguRepository.findById(eagigguId).get();
         Path path = pathRepository.findById(pathId).get();

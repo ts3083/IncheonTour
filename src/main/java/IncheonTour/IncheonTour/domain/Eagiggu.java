@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Setter @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Eagiggu {
 
     @Id @GeneratedValue
