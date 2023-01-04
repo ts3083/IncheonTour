@@ -21,7 +21,7 @@ public class Location {
 
     private String name;
 
-    private String gps_x;
+    private String gps_latitude; // 위도
 
-    private String gps_y;
+    private String gps_longitude; // 경도
 }

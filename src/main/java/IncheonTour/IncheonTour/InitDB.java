@@ -41,10 +41,10 @@ public class InitDB {
             Eagiggu eagiggu = new Eagiggu(Integer.toUnsignedLong(1), "1", null, null);
             Eagiggu saveEagiggu = eagigguRepository.save(eagiggu);
 
-            Location location1 = new Location(null, "해당화사진관", "1", "1");
-            Location location2 = new Location(null, "동화마을슈퍼", "2", "2");
-            Location location3 = new Location(null, "사진의도서관(LBDF)", "3", "3");
-            Location location4 = new Location(null, "빽투더레트로", "4", "4");
+            Location location1 = new Location(null, "해당화사진관", "37.47742287234143", "126.61770608954193");
+            Location location2 = new Location(null, "동화마을슈퍼", "37.477576928286105", "126.61937569483854");
+            Location location3 = new Location(null, "사진의도서관(LBDF)", "37.47030931830154", "126.62611607172194");
+            Location location4 = new Location(null, "빽투더레트로", "37.47386070236973", "126.62020567205283");
             Location saveLocation1 = locationRepository.save(location1);
             Location saveLocation2 = locationRepository.save(location2);
             Location saveLocation3 = locationRepository.save(location3);
