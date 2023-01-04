@@ -15,6 +15,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -50,22 +52,44 @@ public class ApiController {
 
 
     /**실시간 위치 정보 10분 마다 전달받음, 갱신*/
+    @PostMapping("/updateLocation")
+    public ResponseEntity<?> updateLocation(@RequestBody GpsDto gpsDto) {
+        // 현재 위치와 location의 거리를 계산해서 20m 안으로 들어왔다면 현재 location을 갱신
+        String str = "NULL";
+
+        List<Location> locations = locationRepository.findAll();
+        for (Location location : locations) {
+            double dist = getDistance(
+                    Double.parseDouble(gpsDto.getGps_latitude()),
+                    Double.parseDouble(gpsDto.getGps_longitude()),
+                    Double.parseDouble(location.getGps_latitude()),
+                    Double.parseDouble(location.getGps_longitude())); // 해당 location과 현위치와의 거리(meter)
+            if (dist < 30) { // 30m 안으로 들어오면 eagiggu의 current_location을 갱신
+                str = eagigguService.updateEagigguCurrentLocation(Integer.toUnsignedLong(1), location);
+                break;
+            }
+        }
+        return ResponseEntity.ok().body(str);
+    }
+
+    /*{
+        "gps_latitude": "37.47645860319507",
+            "gps_longitude": "126.61764599576283"
+    }*/
+
     /*@PostMapping("/updateLocation")
     public ResponseEntity<?> updateLocation(@RequestBody GpsDto gpsDto) {
 
-        Optional<Location> location = locationRepository.findByName("해당화사진관");
-        double result = getDistance(37.47747105186042, 126.61797717611975, location.get());
+        List<Location> locations = locationRepository.findByName("해당화사진관");
+        Optional<Location> location = locations.stream().filter(l -> Objects.equals(l.getName(), "해당화사진관")).findAny();
 
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok().body(getDistance(
+                Double.parseDouble(gpsDto.getGps_latitude()),
+                Double.parseDouble(gpsDto.getGps_longitude()),
+                Double.parseDouble(location.get().getGps_latitude()),
+                Double.parseDouble(location.get().getGps_longitude())));
     }*/
 
-    @PostMapping("/updateLocation")
-    public double updateLocation() {
-
-        Optional<Location> location = locationRepository.findByName("해당화사진관");
-
-        return getDistance(37.47747105186042, 126.61797717611975, location.get());
-    }
 
     /*@GetMapping("/anal")
     public String StrAnal() {
@@ -106,9 +130,7 @@ public class ApiController {
         return sb + "";
     }
 
-    public double getDistance(double lat1, double lon1, Location location) {
-        double lat2 = Double.parseDouble(location.getGps_latitude());
-        double lon2 = Double.parseDouble(location.getGps_longitude());
+    public double getDistance(double lat1, double lon1, double lat2, double lon2) {
 
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1))* Math.sin(deg2rad(lat2))
