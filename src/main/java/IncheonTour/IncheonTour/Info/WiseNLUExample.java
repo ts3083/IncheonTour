@@ -1,4 +1,4 @@
-package IncheonTour.IncheonTour.StringAnalysis;
+package IncheonTour.IncheonTour.Info;
 
 import com.google.gson.Gson;
 

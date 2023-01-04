@@ -40,6 +40,6 @@ public class EagigguService {
     public String updateEagigguCurrentLocationNull(Long eagigguId) {
         Eagiggu eagiggu = eagigguRepository.findById(eagigguId).get();
         eagiggu.setCurrent_location(null);
-        return "NULL";
+        return "out";
     }
 }
