@@ -35,7 +35,7 @@ public class ApiController {
         return ResponseEntity.ok().build();
     }
 
-    /**행사 정보 조회 - 현 위치가 location이고 행사를 요청했다면, 주변 행사 정보 전송*/
+    /**행사 정보 조회 - 현 위치가 location 중 하나이고 행사를 요청했다면, 해당 location 주변 행사 정보 전송*/
     @GetMapping("/basic")
     public ResponseEntity<?> Basic(@RequestParam(name = "str", defaultValue = "null") String str) {
 
@@ -48,8 +48,11 @@ public class ApiController {
         return ResponseEntity.ok().body(getFestivalInfo(festivalDto));
     }
 
-    /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
+    /**카페 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
 
+    /**관광지 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
+
+    /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
 
     /**실시간 위치 정보 10분 마다 전달받음, 갱신*/
     @PostMapping("/updateLocation")
@@ -65,8 +68,11 @@ public class ApiController {
                     Double.parseDouble(location.getGps_latitude()),
                     Double.parseDouble(location.getGps_longitude())); // 해당 location과 현위치와의 거리(meter)
             if (dist < 30) { // 30m 안으로 들어오면 eagiggu의 current_location을 갱신
-                str = eagigguService.updateEagigguCurrentLocation(Integer.toUnsignedLong(1), location);
+                str = eagigguService.updateEagigguCurrentLocation(Integer.toUnsignedLong(1), location) + "도착";
                 break;
+            }
+            else { // 30m 보다 멀어짐
+                str = eagigguService.updateEagigguCurrentLocationNull(Integer.toUnsignedLong(1));
             }
         }
         return ResponseEntity.ok().body(str);

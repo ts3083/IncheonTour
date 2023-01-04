@@ -35,4 +35,11 @@ public class EagigguService {
         eagiggu.setCurrent_location(location);
         return location.getName();
     }
+
+    @Transactional
+    public String updateEagigguCurrentLocationNull(Long eagigguId) {
+        Eagiggu eagiggu = eagigguRepository.findById(eagigguId).get();
+        eagiggu.setCurrent_location(null);
+        return "NULL";
+    }
 }
