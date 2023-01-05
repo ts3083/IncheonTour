@@ -1,20 +1,19 @@
 package IncheonTour.IncheonTour.api;
 
 import IncheonTour.IncheonTour.Info.PublicData;
-import IncheonTour.IncheonTour.Repsotory.LocationRepository;
 import IncheonTour.IncheonTour.Service.EagigguService;
 import IncheonTour.IncheonTour.Service.LocationService;
+import IncheonTour.IncheonTour.Service.PathService;
 import IncheonTour.IncheonTour.domain.Location;
+import IncheonTour.IncheonTour.domain.Path;
 import IncheonTour.IncheonTour.dto.FestivalDto;
 import IncheonTour.IncheonTour.dto.GpsDto;
+import IncheonTour.IncheonTour.dto.PathDto;
+import IncheonTour.IncheonTour.dto.TouristDestinationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 @RestController
@@ -24,7 +23,14 @@ public class ApiController {
 
     private final EagigguService eagigguService;
     private final LocationService locationService;
+    private final PathService pathService;
     private final PublicData publicData;
+
+    /**사용자에게 path 목록 전송*/
+    @GetMapping("/path")
+    public ResponseEntity<?> pathList() {
+        return ResponseEntity.ok().body(pathService.findAllPath().stream().map(path -> new PathDto(path)));
+    }
 
     /**사용자가 path를 선택*/
     @PostMapping("/path/{path_id}")
@@ -50,25 +56,28 @@ public class ApiController {
         }
         /**관광지 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
         else if (str.contains("관광지")) {
-
+            TouristDestinationDto touristDestinationDto = TouristDestinationDto.createTouristDestinationDto(location);
+            return ResponseEntity.ok().body(publicData.getTouristDestinationInfo(touristDestinationDto));
         }
         /**카페 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
-        else if (str.contains("관광지")) {
+        else if (str.contains("음식점")) {
 
         }
         /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
         else if (str.contains("날씨")) {
+            Path path = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getPath();
+            List<Location> locations = pathService.findAllPathLocation(path.getId());
+            // 날씨 json 파싱하여 string으로 작성 -> 전송
 
         }
-        // 받아온 데이터를 전달
-        //return getFestivalInfo(festivalDto);
+
         return ResponseEntity.ok().body("다시 말해주세요");
     }
 
     /**실시간 위치 정보 10분 마다 전달받음, 갱신*/
     @PostMapping("/updateLocation")
     public ResponseEntity<?> updateLocation(@RequestBody GpsDto gpsDto) {
-        // 현재 위치와 location의 거리를 계산해서 20m 안으로 들어왔다면 현재 location을 갱신
+        // 현재 위치와 location의 거리를 계산해서 30m 안으로 들어왔다면 현재 location을 갱신
         String str = locationService.updateCurrentLocation(gpsDto);
         return ResponseEntity.ok().body(str);
     }
