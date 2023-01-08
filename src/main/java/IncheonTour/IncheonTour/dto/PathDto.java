@@ -8,7 +8,10 @@ public class PathDto {
 
     private Long id;
 
+    private String name;
+
     public PathDto(Path path) {
         this.id = path.getId();
+        this.name = path.getName();
     }
 }

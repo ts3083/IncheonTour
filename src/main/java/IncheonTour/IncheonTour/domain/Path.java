@@ -18,6 +18,8 @@ public class Path {
     @Column(name = "path_id")
     private Long id;
 
+    private String name;
+
     @OneToMany(mappedBy = "path")
     private List<PathLocation> pathLocations = new ArrayList<>();
 }

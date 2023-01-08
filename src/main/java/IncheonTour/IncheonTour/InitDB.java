@@ -51,6 +51,7 @@ public class InitDB {
             Location saveLocation4 = locationRepository.save(location4);
 
             Path path = new Path();
+            path.setName("필름카메라 들고 찰칵 패스");
             Path savePath = pathRepository.save(path);
 
             PathLocation pathLocation1 = PathLocation.createPathLocation(savePath, saveLocation1);
