@@ -6,10 +6,7 @@ import IncheonTour.IncheonTour.Service.LocationService;
 import IncheonTour.IncheonTour.Service.PathService;
 import IncheonTour.IncheonTour.domain.Location;
 import IncheonTour.IncheonTour.domain.Path;
-import IncheonTour.IncheonTour.dto.FestivalDto;
-import IncheonTour.IncheonTour.dto.GpsDto;
-import IncheonTour.IncheonTour.dto.PathDto;
-import IncheonTour.IncheonTour.dto.TouristDestinationDto;
+import IncheonTour.IncheonTour.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,9 +56,11 @@ public class ApiController {
             TouristDestinationDto touristDestinationDto = TouristDestinationDto.createTouristDestinationDto(location);
             return ResponseEntity.ok().body(publicData.getTouristDestinationInfo(touristDestinationDto));
         }
-        /**카페 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
+        /**음식점 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
         else if (str.contains("음식점")) {
-
+            String keyword = "인천 " + location.getSigungu() + " 맛집";
+            RestaurantDto restaurantDto = RestaurantDto.createRestaurantDto(keyword);
+            return ResponseEntity.ok().body(publicData.getRestaurantInfo(restaurantDto));
         }
         /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
         else if (str.contains("날씨")) {
@@ -98,47 +97,6 @@ public class ApiController {
                 Double.parseDouble(gpsDto.getGps_longitude()),
                 Double.parseDouble(location.get().getGps_latitude()),
                 Double.parseDouble(location.get().getGps_longitude())));
-    }*/
-
-
-    /*@GetMapping("/anal")
-    public String StrAnal() {
-        return WiseNLUExample.Analysis();
-    }*/
-
-    /*public String getFestivalInfo(FestivalDto festivalDto) {
-        StringBuffer sb = new StringBuffer();
-        try {
-            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B551011/KorService/searchFestival");
-            urlBuilder.append("?MobileOS=" + festivalDto.getMobileOs());
-            urlBuilder.append("&MobileApp=" + festivalDto.getMobileApp());
-            urlBuilder.append("&serviceKey=" + festivalDto.getServiceKey());
-            urlBuilder.append("&_type=" + festivalDto.get_type());
-            urlBuilder.append("&areaCode=" + festivalDto.getAreaCode());
-            urlBuilder.append("&sigunguCode=" + festivalDto.getSigunguCode());
-            urlBuilder.append("&eventStartDate=" + festivalDto.getEventStartDate());
-
-            URL url = new URL(urlBuilder.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            BufferedReader br;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            } else {
-                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            }
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            br.close();
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return sb + "";
     }*/
 
 
