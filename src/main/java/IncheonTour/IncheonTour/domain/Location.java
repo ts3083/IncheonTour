@@ -2,10 +2,7 @@ package IncheonTour.IncheonTour.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Setter
@@ -21,9 +18,20 @@ public class Location {
 
     private String name;
 
-    private String sigungu;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sigungu_id")
+    private Sigungu sigungu;
 
     private String gps_latitude; // 위도
 
     private String gps_longitude; // 경도
+
+    public static Location createLocation(String name, Sigungu sigungu, String lat, String lon) {
+        Location location = new Location();
+        location.setName(name);
+        location.setSigungu(sigungu);
+        location.setGps_latitude(lat);
+        location.setGps_longitude(lon);
+        return location;
+    }
 }

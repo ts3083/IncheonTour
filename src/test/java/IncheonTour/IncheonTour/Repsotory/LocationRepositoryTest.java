@@ -21,8 +21,8 @@ class LocationRepositoryTest {
     @Autowired LocationRepository locationRepository;
 
     @Test
-    @DisplayName("name으로 게시글 조회가 가능한지 테스트")
-    public void 게시글조회_by_name() throws Exception {
+    @DisplayName("name으로 location 조회가 가능한지 테스트")
+    public void location조회_by_name() throws Exception {
         List<Location> locations = locationRepository.findByName("해당화사진관");
         Optional<Location> location = locations.stream().filter(l -> Objects.equals(l.getName(), "해당화사진관")).findAny();
 

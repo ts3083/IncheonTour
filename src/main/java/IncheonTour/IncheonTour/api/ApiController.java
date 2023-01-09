@@ -39,6 +39,13 @@ public class ApiController {
 
     @GetMapping("/basic")
     public ResponseEntity<?> Basic(@RequestParam(name = "str", defaultValue = "null") String str) {
+        /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
+        if (str.contains("날씨")) {
+            Path path = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getPath();
+            List<Location> locations = pathService.findAllPathLocation(path.getId()); // 사용자가 선택한 path의 locations
+            return ResponseEntity.ok().body(publicData.getWeatherInfo(locations));
+            //return ResponseEntity.ok().body(publicData.getWeatherInfoDetail("54", "124", "1700", "20230109"));
+        }
         // eagiggu의 location 확인
         Location location = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getCurrent_location();
         if(location == null) {
@@ -48,7 +55,7 @@ public class ApiController {
         StringBuffer result = new StringBuffer();
         /**행사 정보 조회 - 현 위치가 location 중 하나이고 행사를 요청했다면, 해당 location 주변 행사 정보 전송*/
         if (str.contains("행사")) { // str을 행사정보조회라는 것을 판별
-            FestivalDto festivalDtoPathNum1 = FestivalDto.createFestivalDtoPathNum1();
+            FestivalDto festivalDtoPathNum1 = FestivalDto.createFestivalDtoPathNum1(location);
             return ResponseEntity.ok().body(publicData.getFestivalInfo(festivalDtoPathNum1));
         }
         /**관광지 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
@@ -58,18 +65,10 @@ public class ApiController {
         }
         /**음식점 정보 조회 - 현 위치가 location 중 하나인지 확인하고 맞다면, 해당 location 주변 카페 정보 전송*/
         else if (str.contains("음식점")) {
-            String keyword = "인천 " + location.getSigungu() + " 맛집";
+            String keyword = "인천 " + location.getSigungu().getName() + " 맛집";
             RestaurantDto restaurantDto = RestaurantDto.createRestaurantDto(keyword);
             return ResponseEntity.ok().body(publicData.getRestaurantInfo(restaurantDto));
         }
-        /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
-        else if (str.contains("날씨")) {
-            Path path = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getPath();
-            List<Location> locations = pathService.findAllPathLocation(path.getId());
-            // 날씨 json 파싱하여 string으로 작성 -> 전송
-
-        }
-
         return ResponseEntity.ok().body("다시 말해주세요");
     }
 

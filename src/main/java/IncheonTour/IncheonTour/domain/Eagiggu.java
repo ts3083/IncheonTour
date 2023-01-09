@@ -16,6 +16,11 @@ public class Eagiggu {
 
     private String state;
 
+    // level, 경험치 (0~100)
+    private Integer level;
+
+    private Integer exp;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "path_id")
     private Path path;

@@ -1,6 +1,9 @@
 package IncheonTour.IncheonTour.dto;
 
+import IncheonTour.IncheonTour.domain.Location;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class FestivalDto {
@@ -19,14 +22,14 @@ public class FestivalDto {
 
     // 행사종료일, 콘텐츠 수정일 생략
 
-    public static FestivalDto createFestivalDtoPathNum1() {
+    public static FestivalDto createFestivalDtoPathNum1(Location location) {
         FestivalDto festivalDto = new FestivalDto();
         festivalDto.setMobileOs("AND");
         festivalDto.setMobileApp("abc");
         festivalDto.setServiceKey("Tt9TUg4iQI%2BRQhBkEZALgIr1XfoqUOnBQITV502D800J6paWCeHJklFrlCZG7407C1S4WtD28lTENN8x9bO3Pw%3D%3D");
         festivalDto.set_type("json");
         festivalDto.setAreaCode("2"); // 인천
-        festivalDto.setSigunguCode("10"); // 중구
+        festivalDto.setSigunguCode(location.getSigungu().getCode()); // 중구
         festivalDto.setEventStartDate("20220101");
         return festivalDto;
     }
