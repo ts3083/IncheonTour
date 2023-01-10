@@ -8,6 +8,7 @@ import IncheonTour.IncheonTour.domain.Location;
 import IncheonTour.IncheonTour.domain.Path;
 import IncheonTour.IncheonTour.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,13 +39,13 @@ public class ApiController {
     }
 
     @GetMapping("/basic")
-    public ResponseEntity<?> Basic(@RequestParam(name = "str", defaultValue = "null") String str) {
+    public ResponseEntity<?> Basic(@RequestParam(name = "str", defaultValue = "null") String str) throws ParseException {
         /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
         if (str.contains("날씨")) {
-            /*Path path = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getPath();
+            Path path = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getPath();
             List<Location> locations = pathService.findAllPathLocation(path.getId()); // 사용자가 선택한 path의 locations
-            return ResponseEntity.ok().body(publicData.getWeatherInfo(locations));*/
-            return ResponseEntity.ok().body(publicData.getWeatherInfoDetail("54", "124", "1900", "20230110"));
+            return ResponseEntity.ok().body(publicData.getWeatherInfo(locations));
+            //return ResponseEntity.ok().body(publicData.getWeatherInfoDetail("54", "124", "1900", "20230110"));
         }
         // eagiggu의 location 확인
         Location location = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getCurrent_location();

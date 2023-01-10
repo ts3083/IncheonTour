@@ -5,17 +5,15 @@ import IncheonTour.IncheonTour.domain.Location;
 import IncheonTour.IncheonTour.dto.FestivalDto;
 import IncheonTour.IncheonTour.dto.RestaurantDto;
 import IncheonTour.IncheonTour.dto.TouristDestinationDto;
-import antlr.StringUtils;
-import com.google.gson.JsonObject;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.modelmapper.internal.Pair;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -116,7 +114,7 @@ public class PublicData {
         return sb + "";
     }
 
-    public String getWeatherInfo(List<Location> locations) {
+    public String getWeatherInfo(List<Location> locations) throws ParseException {
         // 각 location의 구까지 비교하여 중복되지 않는 지역 정보를 가져옴
         // 반복문을 돌면서 해당 지역 정보의 x, y 격자값을 미리 저장한 값에서 읽어오고 날씨 조회하여 string에 append
         // string 반환
@@ -127,14 +125,14 @@ public class PublicData {
 
         StringBuffer sb = new StringBuffer();
         for(String key : mapInfo.keySet()) {
-            sb.append("인천 " + key + " 의 현재 날씨입니다" + "\n");
+            sb.append("인천 " + key + "의 현재 날씨입니다" + "\n");
             sb.append(getWeatherInfoDetail(mapInfo.get(key).getLeft(), mapInfo.get(key).getRight(), getBaseTime(), getBaseDate()));
         }
 
         return sb + "";
     }
 
-    public String getWeatherInfoDetail(String nx, String ny, String baseTime, String baseDate) {
+    public String getWeatherInfoDetail(String nx, String ny, String baseTime, String baseDate) throws ParseException {
         StringBuffer sb = new StringBuffer();
         try {
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst");
@@ -151,41 +149,39 @@ public class PublicData {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sb + "";
+        //return sb + "";
 
-        /*String result = sb.toString();
+        String result = sb.toString();
+        JSONParser jsonParser = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParser.parse(result);
 
         // response 키를 가지고 데이터를 파싱
-        JSONObject jsonObj_1 = new JSONObject(result);
-        String response = jsonObj_1.getString("response");
+        JSONObject parse_response = (JSONObject) obj.get("response");
 
         // response 로 부터 body 찾기
-        JSONObject jsonObj_2 = new JSONObject(response);
-        String body = jsonObj_2.getString("body");
+        JSONObject parse_body = (JSONObject) parse_response.get("body");
 
         // body 로 부터 items 찾기
-        JSONObject jsonObj_3 = new JSONObject(body);
-        String items = jsonObj_3.getString("items");
+        JSONObject parse_items = (JSONObject) parse_body.get("items");
 
         // items로 부터 itemlist 를 받기
-        JSONObject jsonObj_4 = new JSONObject(items);
-        JSONArray jsonArray = jsonObj_4.getJSONArray("item");
+        JSONArray jsonArray = (JSONArray) parse_items.get("item");
 
-        StringBuffer weather = new StringBuffer();
+        StringBuilder weather = new StringBuilder();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            jsonObj_4 = jsonArray.getJSONObject(i);
-            String category = jsonObj_4.getString("category");
-            String obsrValue = jsonObj_4.getString("obsrValue");
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+            Object category = jsonObject.get("category");
+            Object obsrValue = jsonObject.get("obsrValue");
 
-            if (category.equals("T1H")) {
+            if (category.toString().equals("T1H")) {
                 weather.append("기온은 " + obsrValue + "℃ 입니다.\n");
             }
-            if (category.equals("REH")) {
+            else if (category.toString().equals("REH")) {
                 weather.append("습도는 " + obsrValue + "% 입니다.\n");
             }
-            if (category.equals("PTY")) {
-                switch (obsrValue) {
+            else if (category.equals("PTY")) {
+                switch (obsrValue.toString()) {
                     case "0":
                         weather.append("강수는 없습니다.\n");
                         break;
@@ -212,7 +208,7 @@ public class PublicData {
                 }
             }
         }
-        return weather + "";*/
+        return weather + "";
     }
 
     private String getBaseTime() {
