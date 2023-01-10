@@ -137,7 +137,7 @@ public class PublicData {
     public String getWeatherInfoDetail(String nx, String ny, String baseTime, String baseDate) {
         StringBuffer sb = new StringBuffer();
         try {
-            StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst");
+            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst");
             urlBuilder.append("?serviceKey=Tt9TUg4iQI%2BRQhBkEZALgIr1XfoqUOnBQITV502D800J6paWCeHJklFrlCZG7407C1S4WtD28lTENN8x9bO3Pw%3D%3D");
             urlBuilder.append("&pageNo=1");
             urlBuilder.append("&numOfRows=1000");
