@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Path {
+public class MyPath {
 
     @Id
     @GeneratedValue
@@ -20,6 +20,12 @@ public class Path {
 
     private String name;
 
-    @OneToMany(mappedBy = "path")
+    @OneToMany(mappedBy = "myPath")
     private List<PathLocation> pathLocations = new ArrayList<>();
+
+    public static MyPath createPath(String name) {
+        MyPath myPath = new MyPath();
+        myPath.setName(name);
+        return myPath;
+    }
 }

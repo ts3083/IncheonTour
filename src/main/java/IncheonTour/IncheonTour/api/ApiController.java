@@ -5,13 +5,21 @@ import IncheonTour.IncheonTour.Service.EagigguService;
 import IncheonTour.IncheonTour.Service.LocationService;
 import IncheonTour.IncheonTour.Service.PathService;
 import IncheonTour.IncheonTour.domain.Location;
-import IncheonTour.IncheonTour.domain.Path;
+import IncheonTour.IncheonTour.domain.MyPath;
 import IncheonTour.IncheonTour.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -42,8 +50,8 @@ public class ApiController {
     public ResponseEntity<?> Basic(@RequestParam(name = "str", defaultValue = "null") String str) throws ParseException {
         /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
         if (str.contains("날씨")) {
-            Path path = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getPath();
-            List<Location> locations = pathService.findAllPathLocation(path.getId()); // 사용자가 선택한 path의 locations
+            MyPath myPath = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getMyPath();
+            List<Location> locations = pathService.findAllPathLocation(myPath.getId()); // 사용자가 선택한 path의 locations
             return ResponseEntity.ok().body(publicData.getWeatherInfo(locations));
             //return ResponseEntity.ok().body(publicData.getWeatherInfoDetail("54", "124", "1900", "20230110"));
         }
@@ -79,6 +87,27 @@ public class ApiController {
         // 현재 위치와 location의 거리를 계산해서 30m 안으로 들어왔다면 현재 location을 갱신
         String str = locationService.updateCurrentLocation(gpsDto);
         return ResponseEntity.ok().body(str);
+    }
+
+    /**location 이미지 조회*/
+    @GetMapping("/image/{image_name}")
+    public ResponseEntity<?> showImage(@PathVariable("image_name")String imageName) {
+        String imagePath = "C:/Back-End/IncheonTour/src/main/resources/image/" + imageName;
+        Resource resource = new FileSystemResource(imagePath);
+        // 로컬 서버에 저장된 이미지 파일이 없을 경우
+        if(!resource.exists()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // 로컬 서버에 저장된 이미지가 있는 경우 로직 처리
+        HttpHeaders header = new HttpHeaders();
+        Path filePath = null;
+        try {
+            filePath = Paths.get(imagePath);
+            header.add("Content-Type", Files.probeContentType(filePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
     }
 
     /*{

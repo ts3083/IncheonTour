@@ -2,7 +2,7 @@ package IncheonTour.IncheonTour.Service;
 
 import IncheonTour.IncheonTour.Repsotory.PathRepository;
 import IncheonTour.IncheonTour.domain.Location;
-import IncheonTour.IncheonTour.domain.Path;
+import IncheonTour.IncheonTour.domain.MyPath;
 import IncheonTour.IncheonTour.domain.PathLocation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class PathService {
         return results;
     }
 
-    public List<Path> findAllPath() {
+    public List<MyPath> findAllPath() {
         return pathRepository.findAll();
     }
 }

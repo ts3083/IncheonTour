@@ -1,6 +1,6 @@
 package IncheonTour.IncheonTour.dto;
 
-import IncheonTour.IncheonTour.domain.Path;
+import IncheonTour.IncheonTour.domain.MyPath;
 import lombok.Data;
 
 @Data
@@ -10,8 +10,8 @@ public class PathDto {
 
     private String name;
 
-    public PathDto(Path path) {
-        this.id = path.getId();
-        this.name = path.getName();
+    public PathDto(MyPath myPath) {
+        this.id = myPath.getId();
+        this.name = myPath.getName();
     }
 }
