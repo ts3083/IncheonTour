@@ -51,6 +51,10 @@ public class ApiController {
     public ResponseEntity<?> Basic(@RequestParam(name = "str", defaultValue = "null") String str) throws ParseException {
         // eagiggu의 location 확인
         Location location = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getCurrent_location();
+        MyPath myPath = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getMyPath();
+        if (myPath == null) {
+            return ResponseEntity.ok().body("패스를 선택해주세요");
+        }
         if(location == null) {
             return ResponseEntity.ok().body("아직 장소에 도착하지 않았습니다");
         }
@@ -80,6 +84,9 @@ public class ApiController {
         /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
         if (str.contains("날씨")) {
             MyPath myPath = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getMyPath();
+            if (myPath == null) {
+                return ResponseEntity.ok().body("패스를 선택해주세요");
+            }
             List<Location> locations = pathService.findAllPathLocation(myPath.getId()); // 사용자가 선택한 path의 locations
             return ResponseEntity.ok().body(publicData.getWeatherInfo(locations));
             //return ResponseEntity.ok().body(publicData.getWeatherInfoDetail("54", "124", "1900", "20230112"));

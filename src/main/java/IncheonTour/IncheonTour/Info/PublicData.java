@@ -126,6 +126,8 @@ public class PublicData {
         StringBuffer sb = new StringBuffer();
         for(String key : mapInfo.keySet()) {
             sb.append("인천 " + key + "의 현재 날씨입니다" + "\n");
+            System.out.println(getBaseTime());
+            System.out.println(getBaseDate());
             sb.append(getWeatherInfoDetail(mapInfo.get(key).getLeft(), mapInfo.get(key).getRight(), getBaseTime(), getBaseDate()));
         }
 
@@ -212,6 +214,21 @@ public class PublicData {
     }
 
     private String getBaseTime() {
+        String result = "";
+        LocalTime now = LocalTime.now();
+        if (now.getMinute() <= 30) {
+            int hour = now.getHour() - 1;
+            if (hour < 0) {
+                hour = 23;
+            }
+
+            if (hour < 10) {
+                result = "0" + hour + "00";
+            } else {
+                result = hour + "00";
+            }
+            return result;
+        }
         return LocalTime.now().format(DateTimeFormatter.ofPattern("HH00"));
     }
 

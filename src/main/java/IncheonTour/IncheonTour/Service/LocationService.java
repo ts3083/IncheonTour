@@ -2,9 +2,11 @@ package IncheonTour.IncheonTour.Service;
 
 import IncheonTour.IncheonTour.Repsotory.LocationRepository;
 import IncheonTour.IncheonTour.domain.Location;
+import IncheonTour.IncheonTour.domain.MyPath;
 import IncheonTour.IncheonTour.dto.GpsDto;
 import IncheonTour.IncheonTour.dto.LocationDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,14 +16,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LocationService {
 
-    private final LocationRepository locationRepository;
+    private final PathService pathService;
     private final EagigguService eagigguService;
 
     @Transactional
     public String updateCurrentLocation(GpsDto gpsDto) {
         String str = "NULL";
+        MyPath myPath = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getMyPath();
+        if (myPath == null) {
+            return "패스를 선택해주세요";
+        }
+        List<Location> locations = pathService.findAllPathLocation(myPath.getId()); // 사용자가 선택한 path의 locations
 
-        List<Location> locations = locationRepository.findAll();
         for (int i = 0; i < locations.size(); i++) {
             Location location = locations.get(i);
             double dist = getDistance(
@@ -37,7 +43,6 @@ public class LocationService {
                 str = eagigguService.updateEagigguCurrentLocationNull(Integer.toUnsignedLong(1));
             }
         }
-
         return str;
     }
 

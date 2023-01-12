@@ -26,6 +26,7 @@ public class Location {
 
     private String image_name;
 
+    @Column(length = 600)
     private String description;
 
     private String gps_latitude; // 위도
