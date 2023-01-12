@@ -51,32 +51,34 @@ public class InitDB {
             List<Sigungu> sigungus = Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10);
             sigunguRepository.saveAll(sigungus);
 
+            String imagePath = "C:/Back-End/IncheonTour/src/main/resources/image/";
+
             // 필름카메라 들고 찰칵 패스 location
             Location l1 = Location.createLocation("해당화사진관",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l1.jpg", s10,
-                    "37.47742287234143", "126.61770608954193");
+                    imagePath, "l1.jpg", s10, "37.47742287234143", "126.61770608954193",
+                    "필름카메라 대여패키지를 통해 저렴한 가격으로 필름카메라를 경험할 수 있는 사진관");
             Location l2 = Location.createLocation("동화마을슈퍼",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l2.jpg", s10,
-                    "37.477576928286105", "126.61937569483854");
+                    imagePath, "l2.jpg", s10, "37.477576928286105", "126.61937569483854",
+                    "40년동안 한 자리를 지키며 운영해 온 전통 깊은 슈퍼");
             Location l3 = Location.createLocation( "사진의도서관(LBDF)",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l3.jpg", s10,
-                    "37.47030931830154", "126.62611607172194");
+                    imagePath, "l3.jpg", s10, "37.47030931830154", "126.62611607172194",
+                    "책과 어울리는 커피와 차를 마시며 시간을 보낼 수 있는 장소");
             Location l4 = Location.createLocation( "빽투더레트로",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l4.jpg", s10,
-                    "37.47386070236973", "126.62020567205283");
+                    imagePath, "l4.jpg", s10, "37.47386070236973", "126.62020567205283",
+                    "개항장에 위치한 레트로 감성 오락실");
             // 걸어서 센트럴파크 한바퀴 패스 location
             Location l5 = Location.createLocation("송도센트럴파크 호텔",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l5.jpg", s8,
-                    "37.390343971178275", "126.63751237584167");
+                    imagePath, "l5.jpg", s8, "37.390343971178275", "126.63751237584167",
+                    "송도 국제도시 핵심지구에 위치한 송도를 대표하는 호텔, 송도 센트럴파크호텔입니다.");
             Location l6 = Location.createLocation("Burger Room 181",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l6.jpg", s8,
-                    "37.392318171331524", "126.64450999421724");
+                    imagePath, "l6.jpg", s8, "37.392318171331524", "126.64450999421724",
+                    "송도 센트럴파크 근처 버거 맛집");
             Location l7 = Location.createLocation("송도센트럴파크",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l7.jpg", s8,
-                    "37.39266755763194", "126.63864457902064");
+                    imagePath, "l7.jpg", s8, "37.39266755763194", "126.63864457902064",
+                    "송도국제도시 도심 한가운데 있는 거대한 공원");
             Location l8 = Location.createLocation("트라이보울",
-                    "C:/Back-End/IncheonTour/src/main/resources/image/", "l8.jpg", s8,
-                    "37.39421069165456", "126.63502341465761");
+                    imagePath, "l8.jpg", s8, "37.39421069165456", "126.63502341465761",
+                    "인천을 대표하는 복합문화시설");
             List<Location> locations = Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8);
             locationRepository.saveAll(locations);
 

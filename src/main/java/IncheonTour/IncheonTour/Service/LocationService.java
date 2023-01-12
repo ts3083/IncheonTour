@@ -3,6 +3,7 @@ package IncheonTour.IncheonTour.Service;
 import IncheonTour.IncheonTour.Repsotory.LocationRepository;
 import IncheonTour.IncheonTour.domain.Location;
 import IncheonTour.IncheonTour.dto.GpsDto;
+import IncheonTour.IncheonTour.dto.LocationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

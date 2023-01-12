@@ -7,6 +7,8 @@ import IncheonTour.IncheonTour.Service.PathService;
 import IncheonTour.IncheonTour.domain.Location;
 import IncheonTour.IncheonTour.domain.MyPath;
 import IncheonTour.IncheonTour.dto.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.core.io.FileSystemResource;
@@ -42,19 +44,11 @@ public class ApiController {
     @PostMapping("/path/{path_id}")
     public ResponseEntity<?> PathSelect(@PathVariable("path_id") Long pathId) { // 특정 path 선택
         // 선택한 path로 이지꾸에 path_id 저장
-        eagigguService.updateEagigguPath(Integer.toUnsignedLong(1), pathId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(eagigguService.updateEagigguPath(Integer.toUnsignedLong(1), pathId));
     }
 
     @GetMapping("/basic")
     public ResponseEntity<?> Basic(@RequestParam(name = "str", defaultValue = "null") String str) throws ParseException {
-        /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
-        if (str.contains("날씨")) {
-            MyPath myPath = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getMyPath();
-            List<Location> locations = pathService.findAllPathLocation(myPath.getId()); // 사용자가 선택한 path의 locations
-            return ResponseEntity.ok().body(publicData.getWeatherInfo(locations));
-            //return ResponseEntity.ok().body(publicData.getWeatherInfoDetail("54", "124", "1900", "20230110"));
-        }
         // eagiggu의 location 확인
         Location location = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getCurrent_location();
         if(location == null) {
@@ -77,6 +71,18 @@ public class ApiController {
             String keyword = "인천 " + location.getSigungu().getName() + " 맛집";
             RestaurantDto restaurantDto = RestaurantDto.createRestaurantDto(keyword);
             return ResponseEntity.ok().body(publicData.getRestaurantInfo(restaurantDto));
+        }
+        return ResponseEntity.ok().body("다시 말해주세요");
+    }
+
+    @GetMapping("/weather")
+    public ResponseEntity<?> weather(@RequestParam(name = "str") String str) throws ParseException {
+        /**날씨 정보 조회 - 해당 path의 날씨 정보 전송*/
+        if (str.contains("날씨")) {
+            MyPath myPath = eagigguService.getEagigguById(Integer.toUnsignedLong(1)).getMyPath();
+            List<Location> locations = pathService.findAllPathLocation(myPath.getId()); // 사용자가 선택한 path의 locations
+            return ResponseEntity.ok().body(publicData.getWeatherInfo(locations));
+            //return ResponseEntity.ok().body(publicData.getWeatherInfoDetail("54", "124", "1900", "20230112"));
         }
         return ResponseEntity.ok().body("다시 말해주세요");
     }

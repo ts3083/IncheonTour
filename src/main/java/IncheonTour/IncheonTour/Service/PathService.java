@@ -24,6 +24,10 @@ public class PathService {
         return results;
     }
 
+    public MyPath findOne(Long pathId) {
+        return pathRepository.findById(pathId).get();
+    }
+
     public List<MyPath> findAllPath() {
         return pathRepository.findAll();
     }
