@@ -106,7 +106,13 @@ public class InitDB {
 
             MyPath p1 = MyPath.createPath("필름카메라 들고 찰칵 패스");
             MyPath p2 = MyPath.createPath("걸어서 센트럴파크 한바퀴 패스");
-            List<MyPath> myPaths = Arrays.asList(p1, p2);
+            MyPath p3 = MyPath.createPath("제로웨이스트 패스");
+            MyPath p4 = MyPath.createPath("공정여행 패스");
+            MyPath p5 = MyPath.createPath("견생샷 핫플패스");
+            MyPath p6 = MyPath.createPath("동인천 낭만시장 패스");
+            MyPath p7 = MyPath.createPath("걸어야만 보이는 낭만시장 패스");
+            MyPath p8 = MyPath.createPath("영종 해안 드라이브 패스");
+            List<MyPath> myPaths = Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8);
             pathRepository.saveAll(myPaths);
 
             PathLocation pl1 = PathLocation.createPathLocation(p1, l1);
